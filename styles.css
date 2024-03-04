@@ -1,31 +1,95 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  font-family: "Montserrat", sans-serif;
+}
+
 .calculator {
-  width: 200px;
-  margin: 100px auto;
-  padding: 20px;
-  border: 1px solid #333;
-  border-radius: 5px;
+  width: 400px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
 .display {
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #222;
-  color: white;
+  background-color: #252525;
+  color: #ffffff;
+  font-size: 2em;
+  padding: 20px;
   text-align: right;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.1);
 }
 
-.buttons button {
-  width: 45px;
-  height: 45px;
-  margin: 5px;
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  padding: 20px;
 }
 
-.operator {
-  color: #daa520;
+button {
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 1.5em;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.buttons .clear,
-.buttons .equals,
-.buttons .backspace {
-  border-radius: 10px;
+button:hover {
+  background-color: #a4d4ae;
+}
+
+.operator,
+.equals,
+.decimal {
+  color: #ffffff;
+  background-color: #7dbb91;
+}
+
+.operator:hover,
+.equals:hover,
+.decimal:hover {
+  background-color: #659d7a;
+}
+
+.clear {
+  grid-column: span 2;
+  background-color: #ff6b6b;
+  color: #ffffff;
+}
+
+.clear:hover {
+  background-color: #ff5252;
+}
+
+.backspace {
+  background-color: #fca652;
+  color: #ffffff;
+}
+
+.backspace:hover {
+  background-color: #fc9e4f;
+}
+
+@keyframes fireEffect {
+  0% {
+    box-shadow: 0 0 20px #ff5733, 0 0 30px #ff5733, 0 0 40px #ff5733,
+      0 0 50px #ffc300, 0 0 60px #ffc300, 0 0 70px #ffc300;
+  }
+  100% {
+    box-shadow: 0 0 20px #ff5733, 0 0 30px #ff5733, 0 0 40px #ff5733,
+      0 0 50px #ffc300, 0 0 60px #ffc300, 0 0 70px #ffc300;
+    opacity: 100;
+  }
+}
+
+.equals.fire-effect {
+  animation: fireEffect 0.5s forwards;
 }

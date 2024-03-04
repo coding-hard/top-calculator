@@ -60,7 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   clearButton.addEventListener("click", clear);
-  equalsButton.addEventListener("click", evaluate);
+  equalsButton.addEventListener("click", () => {
+    equalsButton.classList.add("fire-effect");
+    evaluate();
+    setTimeout(() => equalsButton.classList.remove("fire-effect"), 200);
+  });
   backspaceButton.addEventListener("click", backspace);
 
   function handleKeyPress(e) {
