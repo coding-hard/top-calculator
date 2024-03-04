@@ -25,7 +25,7 @@
 }
 
 .buttons .clear,
-.buttons .equals {
-  width: 95px;
+.buttons .equals,
+.buttons .backspace {
   border-radius: 10px;
 }

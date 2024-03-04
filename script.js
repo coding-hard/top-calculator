@@ -38,11 +38,13 @@ function operate(operator, a, b) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("keydown", handleKeyPress);
   const display = document.querySelector(".display");
   const numberButtons = document.querySelectorAll(".number");
   const operatorButtons = document.querySelectorAll(".operator");
   const clearButton = document.querySelector(".clear");
   const equalsButton = document.querySelector(".equals");
+  const backspaceButton = document.querySelector(".backspace");
 
   let firstOperand = "";
   let secondOperand = "";
@@ -59,10 +61,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   clearButton.addEventListener("click", clear);
   equalsButton.addEventListener("click", evaluate);
+  backspaceButton.addEventListener("click", backspace);
+
+  function handleKeyPress(e) {
+    if (e.key >= 0 && e.key <= 9) appendNumber(e.key);
+    if (e.key === ".") appendNumber(e.key);
+    if (e.key === "Backspace") backspace();
+    if (e.key === "Enter" || e.key === "=") evaluate();
+    if (["+", "-", "*", "/"].includes(e.key)) setOperation(e.key);
+    if (e.key === "Escape") clear();
+  }
 
   function appendNumber(number) {
     if (display.textContent === "0" || shouldResetScreen) resetScreen();
+    if (number === "." && display.textContent.includes(".")) return;
     display.textContent += number;
+  }
+
+  function backspace() {
+    display.textContent = display.textContent.slice(0, -1);
+    if (display.textContent === "") display.textContent = "0";
   }
 
   function resetScreen() {
@@ -93,11 +111,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     secondOperand = display.textContent;
-    display.textContent = operate(
-      currentOperation,
-      firstOperand,
-      secondOperand
-    );
+    let result = operate(currentOperation, firstOperand, secondOperand);
+    if (result.toString().includes(".")) {
+      result = result.toFixed(2);
+    }
+    display.textContent = result;
     firstOperand = display.textContent;
     currentOperation = null;
     shouldResetScreen = true;
