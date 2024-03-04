@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentOperation === "/" && display.textContent === "0") {
       display.textContent = "Error";
       alert("You can't divide by 0!");
+      clear();
       return;
     }
     secondOperand = display.textContent;
@@ -97,6 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
       firstOperand,
       secondOperand
     );
+    firstOperand = display.textContent;
     currentOperation = null;
+    shouldResetScreen = true;
   }
 });
