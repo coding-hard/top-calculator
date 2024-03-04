@@ -37,84 +37,66 @@ function operate(operator, a, b) {
   }
 }
 
-// Linking JS with HTML
-
 document.addEventListener("DOMContentLoaded", () => {
   const display = document.querySelector(".display");
   const numberButtons = document.querySelectorAll(".number");
   const operatorButtons = document.querySelectorAll(".operator");
-  const equalsButton = document.querySelector(".equals");
   const clearButton = document.querySelector(".clear");
+  const equalsButton = document.querySelector(".equals");
 
   let firstOperand = "";
   let secondOperand = "";
   let currentOperation = null;
+  let shouldResetScreen = false;
 
-  numberButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      appendNumber(button.value);
-    });
-  });
+  numberButtons.forEach((button) =>
+    button.addEventListener("click", () => appendNumber(button.value))
+  );
 
-  operatorButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setOperation(button.value);
-    });
-  });
-
-  equalsButton.addEventListener("click", () => {
-    if (
-      currentOperation != null &&
-      firstOperand !== "" &&
-      secondOperand !== ""
-    ) {
-      calculate();
-    }
-  });
+  operatorButtons.forEach((button) =>
+    button.addEventListener("click", () => setOperation(button.value))
+  );
 
   clearButton.addEventListener("click", clear);
-
-  // Main functions
+  equalsButton.addEventListener("click", evaluate);
 
   function appendNumber(number) {
-    if (
-      display.textContent === "0" ||
-      (currentOperation === null && secondOperand === "")
-    ) {
-      display.textContent = number;
-    } else {
-      display.textContent += number;
-    }
-
-    if (currentOperation === null) {
-      firstOperand += number;
-    } else {
-      secondOperand += number;
-    }
+    if (display.textContent === "0" || shouldResetScreen) resetScreen();
+    display.textContent += number;
   }
 
-  function setOperation(operator) {
-    if (currentOperation !== null) calculate();
-    firstOperand = display.textContent;
-    currentOperation = operator;
-  }
-
-  function calculate() {
-    secondOperand = display.textContent;
-    display.textContent = operate(
-      currentOperation,
-      firstOperand,
-      secondOperand
-    );
-    firstOperand = display.textContent;
-    secondOperand = "";
-    currentOperation = null;
+  function resetScreen() {
+    display.textContent = "";
+    shouldResetScreen = false;
   }
 
   function clear() {
     display.textContent = "0";
     firstOperand = "";
     secondOperand = "";
+    currentOperation = null;
+  }
+
+  function setOperation(operator) {
+    if (currentOperation !== null) evaluate();
+    firstOperand = display.textContent;
+    currentOperation = operator;
+    shouldResetScreen = true;
+  }
+
+  function evaluate() {
+    if (currentOperation === null || shouldResetScreen) return;
+    if (currentOperation === "/" && display.textContent === "0") {
+      display.textContent = "Error";
+      alert("You can't divide by 0!");
+      return;
+    }
+    secondOperand = display.textContent;
+    display.textContent = operate(
+      currentOperation,
+      firstOperand,
+      secondOperand
+    );
     currentOperation = null;
   }
 });
